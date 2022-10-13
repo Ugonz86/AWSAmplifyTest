@@ -1,0 +1,5 @@
+{
+  "AppSyncApiName": "awsamplifytest",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false
+}
