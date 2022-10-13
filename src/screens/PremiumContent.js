@@ -17,16 +17,13 @@ import {
   createNote as createNoteMutation,
   deleteNote as deleteNoteMutation,
 } from "./graphql/mutations";
-import Auth from '@aws-amplify/auth';
+
 import { Amplify } from "aws-amplify";
 import awsmobile from "./aws-exports";
 Amplify.configure(awsmobile);
 
-const App = ({ signOut }) => {
+const PremiumContent = ({ signOut }) => {
   const [notes, setNotes] = useState([]);
-  const [userName, setUserName] = useState(Auth.user.attributes.email);
-
-  console.log(userName, "here!")
 
   useEffect(() => {
     fetchNotes();
@@ -78,7 +75,6 @@ const App = ({ signOut }) => {
   return (
     <View className="App">
       <Heading level={1}>My Notes App</Heading>
-      <Text>Hello {userName}!</Text>
       <View as="form" margin="3rem 0" onSubmit={createNote}>
         <Flex direction="row" justifyContent="center">
           <TextField
@@ -142,4 +138,4 @@ const App = ({ signOut }) => {
   );
 };
 
-export default withAuthenticator(App);
+export default withAuthenticator(PremiumContent);
