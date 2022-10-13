@@ -17,16 +17,21 @@ import {
   createNote as createNoteMutation,
   deleteNote as deleteNoteMutation,
 } from "./graphql/mutations";
-import Auth from '@aws-amplify/auth';
+import Auth from "@aws-amplify/auth";
 import { Amplify } from "aws-amplify";
 import awsmobile from "./aws-exports";
 Amplify.configure(awsmobile);
 
+Auth.currentAuthenticatedUser().then((user) => {
+  console.log(user.username)
+})
+
 const App = ({ signOut }) => {
   const [notes, setNotes] = useState([]);
-  const [userName, setUserName] = useState(Auth.user.attributes.email);
+  // const [userName, setUserName] = useState(Auth.user.attributes.email);
+  const [userName, setUserName] = useState(Auth.user.username)
 
-  console.log(userName, "here!")
+  console.log(userName, "here!");
 
   useEffect(() => {
     fetchNotes();
@@ -77,12 +82,23 @@ const App = ({ signOut }) => {
 
   return (
     <View className="App">
-      <Heading level={1}>My Notes App</Heading>
-      <Text>Hello {userName}!</Text>
-      <View as="form" margin="3rem 0" onSubmit={createNote}>
+      <View style={{              
+              backgroundColor: "#bcd6d6",
+              borderRadius: 20,
+              margin: "0 auto",
+              justifyContent: "center",
+              marginBottom: 3,
+              padding: 20,
+              width: 600}}>
+        <Heading level={1}>My Notes App</Heading>
+        <Text>Hello {userName}!</Text>
+      </View>
+
+      <View as="form" margin="3rem 0" style={{ borderRadius: 20, justifyContent: 'center', margin: '0 auto'}} onSubmit={createNote}>
         <Flex direction="row" justifyContent="center">
           <TextField
             name="name"
+            color="grey"
             placeholder="Note Name"
             label="Note Name"
             labelHidden
@@ -101,15 +117,18 @@ const App = ({ signOut }) => {
             name="image"
             as="input"
             type="file"
-            style={{ alignSelf: "end" }}
+            style={{ alignSelf: "end", borderRadius: 5 }}
+            height={35}
+            color="grey"
+            
           />
           <Button type="submit" variation="primary">
             Create Note
           </Button>
         </Flex>
       </View>
-      <Heading level={2}>Current Notes</Heading>
-      <View margin="3rem 0" >
+
+      <View margin="3rem 0">
         {notes.map((note) => (
           <Flex
             key={note.id || note.name}
@@ -117,7 +136,14 @@ const App = ({ signOut }) => {
             justifyContent="center"
             alignItems="center"
             width={600}
-            style={{ backgroundColor: '#bcd6d6', borderRadius: 20, margin: '0 auto', justifyContent: 'center', marginBottom: 3 }}
+            style={{
+              backgroundColor: "#bcd6d6",
+              borderRadius: 20,
+              margin: "0 auto",
+              justifyContent: "center",
+              marginBottom: 3,
+              padding: 20,
+            }}
           >
             <Text as="strong" fontWeight={700}>
               {note.name}
@@ -133,11 +159,10 @@ const App = ({ signOut }) => {
             <Button variation="link" onClick={() => deleteNote(note)}>
               Delete note
             </Button>
-            {/* <View style={{width: '100%', height: 1, backgroundColor: 'black'}} /> */}
           </Flex>
         ))}
       </View>
-      <Button onClick={signOut}>Sign Out</Button>
+      <Button onClick={signOut} variation="primary">Sign Out</Button>
     </View>
   );
 };

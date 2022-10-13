@@ -3,6 +3,10 @@
   justify-content: 'center';
   align-items: 'center';
   margin: 0 auto;
+  padding-bottom: 50px;
+  background-color: #f0f5f5;
+  width: 85%;
+  border-radius: 20px;
 }
 
 .App-logo {
@@ -38,4 +42,11 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+::-webkit-file-upload-button {
+  background: #d3dede;
+  color: grey;
+  border: none;
+  border-radius: 5px;
 }
